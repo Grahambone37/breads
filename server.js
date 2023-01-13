@@ -16,11 +16,11 @@ const breadsController = require('./controllors/breads_controller')
 app.use('/breads', breadsController)
 
 app.get('*', (req, res) => {
-    res.status(404).send('Error 404, no page available.')
+    res.status(404).render('error404')
 })
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
 })
- 
+  
 
