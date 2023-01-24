@@ -1,12 +1,10 @@
 const express = require('express')
 const breads = express.Router()
-const mongoose = require('mongoose')
 const Bread = require('../models/bread')
 
 breads.get('/', (req, res) => {
     Bread.find()
         .then(foundBreads => {
-            console.log(foundBreads)
             res.render('index', {
                 breads: foundBreads,
                 title: 'Index Page'
@@ -17,7 +15,6 @@ breads.get('/', (req, res) => {
 
 breads.get('/new', (req, res) => {
     res.render('new')
-    console.log(Bread)
 })
 
 breads.get('/:arrayIndex/edit', (req, res) => {
@@ -28,14 +25,15 @@ breads.get('/:arrayIndex/edit', (req, res) => {
 })
 
 breads.get('/:arrayIndex', (req, res) => {
-    if (Bread[req.params.arrayIndex]) {
-        res.render('Show', {
-            bread: Bread[req.params.arrayIndex],
-            index: req.params.arrayIndex,
+    Bread.findById(req.params.arrayIndex)
+        .then(foundBread => {
+            res.render('show', {
+                bread: foundBread
+            })
         })
-    } else {
-        res.status(404).render('error404')
-    }
+        .catch(err => {
+            res.status(404).render('error404')
+        })
 })
 
 breads.post('/', (req, res) => {
@@ -47,7 +45,7 @@ breads.post('/', (req, res) => {
     } else {
         req.body.hasGluten = 'false'
     }
-    Bread.push(req.body)
+    Bread.create(req.body)
     res.redirect('/breads')
 })
 
