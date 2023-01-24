@@ -4,7 +4,13 @@ const express = require('express')
 const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, () => { console.log("connected to mongo: ", process.env.MONGO_URI) })
+mongoose.set('strictQuery', false)
+const mongoDB = process.env.MONGO_URI
+//OK I TRIED EVERYTHING BUT WHAT WORKED WAS CHANGING localhost to 127.0.0.1 FOR MONGODB TO F'ING CONNECT
+
+mongoose.connect(mongoDB, () => {
+    console.log("connection made")
+})
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jsx')
@@ -27,5 +33,5 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
 })
+
    
- 

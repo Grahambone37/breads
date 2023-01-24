@@ -1,18 +1,23 @@
 const express = require('express')
 const breads = express.Router()
+const mongoose = require('mongoose')
 const Bread = require('../models/bread')
 
 breads.get('/', (req, res) => {
-    res.render('index',
-        {
-            breads: Bread,
-            title: 'Index Page'
-        }
-    )
+    Bread.find()
+        .then(foundBreads => {
+            console.log(foundBreads)
+            res.render('index', {
+                breads: foundBreads,
+                title: 'Index Page'
+            })
+        })
 })
+
 
 breads.get('/new', (req, res) => {
     res.render('new')
+    console.log(Bread)
 })
 
 breads.get('/:arrayIndex/edit', (req, res) => {
@@ -35,7 +40,7 @@ breads.get('/:arrayIndex', (req, res) => {
 
 breads.post('/', (req, res) => {
     if (!req.body.image) {
-        req.body.image = "/images/dough.jpg"
+        req.body.image = undefined
     }
     if (req.body.hasGluten === 'on') {
         req.body.hasGluten = 'true'
