@@ -1,3 +1,5 @@
+/*
+erased cause moving to MongoDB
 module.exports = [
     {
       name: 'Rye',
@@ -19,5 +21,20 @@ module.exports = [
       hasGluten: true,
       image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80',
     }
-  ]
+  ]*/
+
+//require mongoose
+const mongoose = require('mongoose')
+//creating shorthand for the Schema constructor
+const { Schema } = mongoose
+
+const breadSchema = new Schema({
+  name: { type: String, required: true },
+  hasGluten: { type: Boolean, default: true },
+  image: { type: String, default: "http://placekitten.com/400/400" }
+})
+
+const Bread = mongoose.model('Bread', breadSchema)
+
+module.exports = Bread
   
