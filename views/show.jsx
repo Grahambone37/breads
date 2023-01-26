@@ -3,6 +3,7 @@ const Default = require('./layouts/default')
 
 function Show({bread}) {
     //console.log(bread.name)
+    const bakedBy = bread.getBakedBy()
     return (
         <Default>
             <h3>{bread.name}</h3>
@@ -16,7 +17,7 @@ function Show({bread}) {
                 have gluten
             </p>
             <img src={bread.image} alt={bread.name} />
-            <p>Baked by {bread.baker}</p>
+            <p>{bakedBy}</p>
             <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
             <form action={`/breads/${bread.id}?_method=DELETE`} method="POST">
                 <input type="submit" value="DELETE"/>
