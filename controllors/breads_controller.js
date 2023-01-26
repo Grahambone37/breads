@@ -1,10 +1,12 @@
 const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread')
+const _ = require('lodash')
 
 breads.get('/', (req, res) => {
     Bread.find()
         .then(foundBreads => {
+            console.log(foundBreads)
             res.render('index', {
                 breads: foundBreads,
                 title: 'Index Page'
@@ -37,9 +39,7 @@ breads.get('/:arrayIndex', (req, res) => {
 })
 
 breads.post('/', (req, res) => {
-    if (!req.body.image) {
-        req.body.image = undefined
-    }
+    req.body = _.mapValues(req.body, v => v == ''? undefined: v)
     if (req.body.hasGluten === 'on') {
         req.body.hasGluten = 'true'
     } else {
