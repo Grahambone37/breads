@@ -39,7 +39,7 @@ breads.get('/:arrayIndex', (req, res) => {
 })
 
 breads.post('/', (req, res) => {
-    req.body = _.mapValues(req.body, v => v == ''? undefined: v)
+    req.body = _.mapValues(req.body, v => v == '' ? undefined : v)
     if (req.body.hasGluten === 'on') {
         req.body.hasGluten = 'true'
     } else {
@@ -60,8 +60,12 @@ breads.put('/:arrayIndex', (req, res) => {
 })
 
 breads.delete('/:arrayIndex', (req, res) => {
-    Bread.splice(req.params.arrayIndex, 1)
-    res.status(303).redirect('/breads')
+    // Bread.splice(req.params.arrayIndex, 1) 
+    Bread.findByIdAndDelete(req.params.arrayIndex)
+        .then(deletedBread => {
+            console.log(deletedBread)
+            res.status(303).redirect('/breads')
+        })
 })
 
 module.exports = breads
