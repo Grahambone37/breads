@@ -2,6 +2,7 @@ const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread')
 const _ = require('lodash')
+const moreBread = require('../seeders/more_bread')
 
 breads.get('/', (req, res) => {
     Bread.find()
@@ -22,7 +23,12 @@ breads.post('/', (req, res) => {
         req.body.hasGluten = 'false'
     }
     Bread.create(req.body)
-    res.redirect('/breads')
+        .then(() => {
+            res.redirect('/breads')
+        })
+        .catch(err => {
+            res.send(err)
+        })
 })
 
 breads.get('/new', (req, res) => {
@@ -30,28 +36,7 @@ breads.get('/new', (req, res) => {
 })
 
 breads.get('/seed', (req, res) => {
-    Bread.insertMany([
-        {
-            name: 'Rye',
-            hasGluten: true,
-            image: 'https://images.unsplash.com/photo-1595535873420-a599195b3f4a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
-        },
-        {
-            name: 'French',
-            hasGluten: true,
-            image: 'https://images.unsplash.com/photo-1534620808146-d33bb39128b2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        },
-        {
-            name: 'Gluten Free',
-            hasGluten: false,
-            image: 'https://images.unsplash.com/photo-1546538490-0fe0a8eba4e6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80',
-        },
-        {
-            name: 'Pumpernickel',
-            hasGluten: true,
-            image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80',
-        }
-    ])
+    Bread.insertMany(moreBread)
         .then(createdBreads => {
             res.redirect('/breads')
         })
@@ -84,7 +69,7 @@ breads.put('/:arrayIndex', (req, res) => {
 })
 
 breads.delete('/:arrayIndex', (req, res) => {
-    // Bread.splice(req.params.arrayIndex, 1)   
+    // Bread.splice(req.params.arrayIndex, 1)  
     Bread.findByIdAndDelete(req.params.arrayIndex)
         .then(deletedBread => {
             console.log(deletedBread)

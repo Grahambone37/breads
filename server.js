@@ -6,7 +6,7 @@ const app = express()
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const mongoDB = process.env.MONGO_URI
-//OK I TRIED EVERYTHING BUT WHAT WORKED WAS CHANGING localhost to 127.0.0.1 FOR MONGODB TO F'ING CONNECT
+//OK I TRIED EVERYTHING BUT WHAT WORKED WAS CHANGING localhost to 127.0.0.1 FOR MONGODB TO F'ING CONNECT 
 
 mongoose.connect(mongoDB, () => {
     console.log("connection made")
