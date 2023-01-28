@@ -1,9 +1,10 @@
 const React = require('react')
 const Default = require('./layouts/default')
 
-function Show({bread}) {
-    //console.log(bread.name)
-    const bakedBy = bread.getBakedBy()
+function Show({ bread }) {
+    //keep this incase need to delete
+    //let bakedBy = ''
+    let bakedBy = bread.getBakedBy()
     return (
         <Default>
             <h3>{bread.name}</h3>

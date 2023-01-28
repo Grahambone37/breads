@@ -8,14 +8,14 @@ const Baker = require('../models/baker.js')
 breads.get('/', (req, res) => {
     Bread.find()
         .then(foundBreads => {
-            // console.log(foundBreads) 
+            // console.log(foundBreads)   
             res.render('index', {
                 breads: foundBreads,
                 title: 'Index Page'
             })
         })
 })
- 
+
 breads.post('/', (req, res) => {
     req.body = _.mapValues(req.body, v => v == '' ? undefined : v)
     if (req.body.hasGluten === 'on') {
@@ -38,7 +38,7 @@ breads.get('/new', (req, res) => {
             res.render('new', { bakers: foundBakers })
         })
 })
-   
+
 breads.get('/seed', (req, res) => {
     Bread.insertMany(moreBread)
         .then(createdBreads => {
@@ -48,6 +48,7 @@ breads.get('/seed', (req, res) => {
 
 breads.get('/:arrayIndex', (req, res) => {
     Bread.findById(req.params.arrayIndex)
+        .populate('baker')
         .then(foundBread => {
             res.render('show', {
                 bread: foundBread
@@ -81,10 +82,13 @@ breads.delete('/:arrayIndex', (req, res) => {
 })
 
 breads.get('/:arrayIndex/edit', (req, res) => {
-    Bread.findById(req.params.arrayIndex)
-        .then(foundBread => {
-            res.render('edit', { bread: foundBread })
+    Baker.find()
+        .then(foundBakers => {
+            Bread.findById(req.params.arrayIndex)
+                .then(foundBread => {
+                    res.render('edit', { bread: foundBread, bakers: foundBakers })
+                })
         })
 })
-
+                   
 module.exports = breads

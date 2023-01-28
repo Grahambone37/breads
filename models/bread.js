@@ -11,12 +11,12 @@ const breadSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Baker'
   }
-})
+}, { toJSON: { virtuals: true }})
 
 breadSchema.methods.getBakedBy = function () {
-  return `${this.name} was baked with love by ${this.baker}`
+  return `${this.name} was baked with love by ${this.baker.name}, who has been with us since ${this.baker.startDate.getFullYear()}`
 }
-
+ 
 const Bread = mongoose.model('Bread', breadSchema)
 
 module.exports = Bread
