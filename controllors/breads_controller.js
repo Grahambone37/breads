@@ -3,11 +3,12 @@ const breads = express.Router()
 const Bread = require('../models/bread')
 const _ = require('lodash')
 const moreBread = require('../seeders/more_bread')
+const Baker = require('../models/baker.js')
 
 breads.get('/', (req, res) => {
     Bread.find()
         .then(foundBreads => {
-            // console.log(foundBreads)
+            // console.log(foundBreads) 
             res.render('index', {
                 breads: foundBreads,
                 title: 'Index Page'
@@ -32,9 +33,12 @@ breads.post('/', (req, res) => {
 })
 
 breads.get('/new', (req, res) => {
-    res.render('new')
+    Baker.find()
+        .then(foundBakers => {
+            res.render('new', { bakers: foundBakers })
+        })
 })
-
+   
 breads.get('/seed', (req, res) => {
     Bread.insertMany(moreBread)
         .then(createdBreads => {
@@ -69,7 +73,6 @@ breads.put('/:arrayIndex', (req, res) => {
 })
 
 breads.delete('/:arrayIndex', (req, res) => {
-    // Bread.splice(req.params.arrayIndex, 1)  
     Bread.findByIdAndDelete(req.params.arrayIndex)
         .then(deletedBread => {
             console.log(deletedBread)
