@@ -6,16 +6,20 @@ const moreBread = require('../seeders/more_bread')
 const Baker = require('../models/baker.js')
 
 breads.get('/', (req, res) => {
-    Bread.find()
-        .then(foundBreads => {
-            // console.log(foundBreads)   
-            res.render('index', {
-                breads: foundBreads,
-                title: 'Index Page'
-            })
+    Baker.find()
+        .then(foundBakers => {
+            Bread.find()
+                .then(foundBreads => {
+                    // console.log(foundBreads)    
+                    res.render('index', {
+                        breads: foundBreads,
+                        bakers: foundBakers,
+                        title: 'Index Page'
+                    })
+                })
         })
 })
-
+   
 breads.post('/', (req, res) => {
     req.body = _.mapValues(req.body, v => v == '' ? undefined : v)
     if (req.body.hasGluten === 'on') {
@@ -90,5 +94,5 @@ breads.get('/:arrayIndex/edit', (req, res) => {
                 })
         })
 })
-                   
+
 module.exports = breads
