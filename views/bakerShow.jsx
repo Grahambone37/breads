@@ -2,6 +2,7 @@ const React = require('react')
 const Default = require('./layouts/Default')
 
 function Show({ baker }) {
+    //console.log(baker.id)
     return (
         <Default title="Bakers">
             <h3>{baker.name}</h3>
