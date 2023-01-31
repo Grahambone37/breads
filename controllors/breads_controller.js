@@ -5,21 +5,17 @@ const _ = require('lodash')
 const moreBread = require('../seeders/more_bread')
 const Baker = require('../models/baker.js')
 
-breads.get('/', (req, res) => {
-    Baker.find()
-        .then(foundBakers => {
-            Bread.find()
-                .then(foundBreads => {
-                    // console.log(foundBreads)    
-                    res.render('index', {
-                        breads: foundBreads,
-                        bakers: foundBakers,
-                        title: 'Index Page'
-                    })
-                })
-        })
+breads.get('/', async (req, res) => {
+    const foundBakers = await Baker.find().lean()
+    const foundBreads = await Bread.find().limit(10).lean()
+    // console.log(foundBreads)     
+    res.render('index', {
+        breads: foundBreads,
+        bakers: foundBakers,
+        title: 'Index Page'
+    })
 })
-   
+
 breads.post('/', (req, res) => {
     req.body = _.mapValues(req.body, v => v == '' ? undefined : v)
     if (req.body.hasGluten === 'on') {
@@ -35,7 +31,7 @@ breads.post('/', (req, res) => {
             res.send(err)
         })
 })
- 
+
 breads.get('/new', (req, res) => {
     Baker.find()
         .then(foundBakers => {
@@ -49,7 +45,7 @@ breads.get('/seed', (req, res) => {
             res.redirect('/breads')
         })
 })
-     
+
 breads.get('/:arrayIndex', (req, res) => {
     Bread.findById(req.params.arrayIndex)
         .populate('baker')
