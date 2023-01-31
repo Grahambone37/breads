@@ -25,6 +25,13 @@ baker.get('/data/seed', (req, res) => {
     Baker.insertMany(bakerSeedData)
         .then(res.redirect('/breads'))
 })
- 
 
+baker.delete('/:id', (req, res) => {
+    Baker.findByIdAndDelete(req.params.id)
+        .then(deletedBaker => {
+            res.status(303).redirect('/breads')
+        })
+})
+ 
+   
 module.exports = baker

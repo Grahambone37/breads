@@ -35,7 +35,7 @@ breads.post('/', (req, res) => {
             res.send(err)
         })
 })
-
+ 
 breads.get('/new', (req, res) => {
     Baker.find()
         .then(foundBakers => {
@@ -46,10 +46,11 @@ breads.get('/new', (req, res) => {
 breads.get('/seed', (req, res) => {
     Bread.insertMany(moreBread)
         .then(createdBreads => {
+            console.log(createdBreads)
             res.redirect('/breads')
         })
 })
-
+    
 breads.get('/:arrayIndex', (req, res) => {
     Bread.findById(req.params.arrayIndex)
         .populate('baker')
